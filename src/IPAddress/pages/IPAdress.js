@@ -37,7 +37,7 @@ const IPAddress = () => {
           });
         });
     }
-  }, [ip]);
+  }, [ip, isValid]);
 
   const setIPAddress = (ipAddress) => {
     if (ipRegex().test(ipAddress) || ipAddress === "") {
