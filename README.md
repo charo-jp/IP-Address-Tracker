@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+# Frontend Mentor - IP address tracker solution
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a solution to the [IP address tracker challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/ip-address-tracker-I8-0yYAH0). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
 
-## Available Scripts
+## Table of contents
 
-In the project directory, you can run:
+- [Overview](#overview)
+  - [Purpose](#purpose)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned and Challenges I faced](#what-i-learned-and-Challenges-I-faced)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Overview
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Purpose
+This is my first react application. The purpose of this project is to implement everything I have learned so far in practice. These are what I have learned so far:
 
-### `npm test`
+  - React Components
+  - Hooks (UseState and UseEffect)
+  - Fetching data from API (JSON format)
+  - Using third party module
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Links
 
-### `npm run build`
+- Solution URL: [IP Address Tracker](https://github.com/charo-jp/IP-Address-Tracker)
+- Live Site URL: [Add live site URL here](https://lucid-jennings-7c30a8.netlify.app/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## My process
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Built with
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [React](https://reactjs.org/) - JS library
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### What I learned and Challenges I faced
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- The difficult part is to fetch nested JSON data. At first I set location and tried to access nested data but it did not work. The solution is simply to extract data I need in useEffect and set it to location so that later I have an access to the data.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  ```JS
+  const [ip, setIP] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [placeholder, setPlaceholder] = useState({
+    text: "Search for any IP address",
+    cname: "",
+  });
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  const [location, setLocation] = useState({});
+  const [center, setCenter] = useState({});
 
-## Learn More
+    useEffect(() => {
+    if (isValid || ip === "") {
+      fetch(
+        `https://geo.ipify.org/api/v2/country,city?apiKey=YOUR_API_KEY=${ip}`
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          setLocation({
+            ip: json.ip,
+            city: json.location.city,
+            timezone: json.location.timezone,
+            isp: json.isp,
+          });
+          setCenter({
+            lat: Number(json.location.lat),
+            lng: Number(json.location.lng),
+          });
+        });
+    }
+  }, [ip, isValid]);
+  ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Although it is not good practice to paste API key as it is on the frontend on actual project. In MERN stack, I should keep these variables on backend to prevent others from stealing.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Sending data from child component to parent component was involved a little difficulity. I just need to pass the function to the child component and inside the component, pass the data as an argument.
 
-### Code Splitting
+- Throughout this project I realized how important file management is. I got confused during the development of where I wrote my code. In the next project, I would like to make a plan before coding.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+I feel like there are many improvements that I can do but as I am new to React I can not find these by myself. Feel free and do not hesitate to mention some fixations and codes can be better!
