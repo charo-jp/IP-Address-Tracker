@@ -1,0 +1,6 @@
+{
+  "name": "IP Address Tracker",
+  "short_name": "IP Tracker",
+  "start_url":"/",
+  "display": "fullscreen"
+}
